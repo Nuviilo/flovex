@@ -11,6 +11,10 @@
     "firebase-applet-config.json"
   ],
   "extraMetadata": {
+    "name": "flovex",
+    "version": "1.0.0",
+    "description": "Instant ephemeral file sharing powered by Firestore",
+    "author": "flovex",
     "main": "electron/main.cjs"
   },
   "win": {
@@ -24,10 +28,13 @@
         "target": "nsis",
         "arch": ["x64"]
       }
-    ],
-    "artifactName": "${productName}-${version}-${target}.${ext}"
+    ]
+  },
+  "portable": {
+    "artifactName": "${productName}-${version}-portable.${ext}"
   },
   "nsis": {
+    "artifactName": "${productName}-${version}-setup.${ext}",
     "oneClick": false,
     "allowToChangeInstallationDirectory": true
   }
