@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "ShareFile": {
+      "title": "ShareFile",
+      "description": "Metadata and availability window for an uploaded file shared via a unique Share ID.",
+      "type": "object",
+      "properties": {
+        "shareId": {
+          "type": "string",
+          "description": "Unique share identifier used by recipients to look up and download the file.",
+          "minLength": 6,
+          "maxLength": 32,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "fileName": {
+          "type": "string",
+          "description": "Original filename of the uploaded file.",
+          "minLength": 1,
+          "maxLength": 255
+        },
+        "fileType": {
+          "type": "string",
+          "description": "MIME type of the uploaded file.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "fileSize": {
+          "type": "integer",
+          "description": "Original size of the file in bytes (up to 15 MB)."
+        },
+        "chunkCount": {
+          "type": "integer",
+          "description": "Total number of sequential chunks in the chunks subcollection."
+        },
+        "chunkSize": {
+          "type": "integer",
+          "description": "Raw byte size per chunk before Base64 encoding."
+        },
+        "durationMinutes": {
+          "type": "integer",
+          "description": "Uploader-chosen availability duration in minutes (1 to 43200)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the share was created."
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp after which the file is no longer accessible."
+        }
+      },
+      "required": [
+        "shareId",
+        "fileName",
+        "fileType",
+        "fileSize",
+        "chunkCount",
+        "chunkSize",
+        "durationMinutes",
+        "createdAt",
+        "expiresAt"
+      ]
+    },
+    "FileChunk": {
+      "title": "FileChunk",
+      "description": "Sequential Base64-encoded binary chunk of a shared file, sized safely below Firestore's 1 MiB document limit.",
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "description": "Zero-based sequential index of this chunk."
+        },
+        "data": {
+          "type": "string",
+          "description": "Base64-encoded binary payload for this chunk.",
+          "minLength": 1,
+          "maxLength": 700000
+        }
+      },
+      "required": [
+        "index",
+        "data"
+      ]
+    }
+  },
+  "firestore": {
+    "/shares/{shareId}": {
+      "schema": {
+        "$ref": "#/entities/ShareFile"
+      },
+      "description": "Top-level shared file metadata documents keyed by their unique Share ID."
+    },
+    "/shares/{shareId}/chunks/{chunkId}": {
+      "schema": {
+        "$ref": "#/entities/FileChunk"
+      },
+      "description": "Subcollection storing sequential binary chunks for the parent ShareFile."
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "appId": "com.flovex.desktop",
+  "productName": "flovex",
+  "directories": {
+    "output": "dist-electron"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "package.json",
+    "firebase-applet-config.json"
+  ],
+  "extraMetadata": {
+    "main": "electron/main.cjs"
+  },
+  "win": {
+    "target": [
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      },
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "artifactName": "${productName}-${version}-${target}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  }
+}

@@ -1,0 +1,124 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default-Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidShareId(id) {
+      return id is string &&
+        id.size() >= 6 &&
+        id.size() <= 32 &&
+        id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidChunkId(id) {
+      return id is string &&
+        id.size() >= 1 &&
+        id.size() <= 4 &&
+        id.matches('^[0-9]+$');
+    }
+
+    function isValidShareFile(data) {
+      return data.keys().hasAll([
+          'shareId',
+          'fileName',
+          'fileType',
+          'fileSize',
+          'chunkCount',
+          'chunkSize',
+          'durationMinutes',
+          'createdAt',
+          'expiresAt'
+        ]) &&
+        data.keys().hasOnly([
+          'shareId',
+          'fileName',
+          'fileType',
+          'fileSize',
+          'chunkCount',
+          'chunkSize',
+          'durationMinutes',
+          'createdAt',
+          'expiresAt'
+        ]) &&
+        isValidShareId(data.shareId) &&
+        data.fileName is string &&
+        data.fileName.size() >= 1 &&
+        data.fileName.size() <= 255 &&
+        data.fileType is string &&
+        data.fileType.size() >= 1 &&
+        data.fileType.size() <= 128 &&
+        data.fileSize is int &&
+        data.fileSize >= 1 &&
+        data.fileSize <= 15728640 &&
+        data.chunkCount is int &&
+        data.chunkCount >= 1 &&
+        data.chunkCount <= 35 &&
+        data.chunkSize is int &&
+        data.chunkSize >= 1 &&
+        data.chunkSize <= 500000 &&
+        data.durationMinutes is int &&
+        data.durationMinutes >= 1 &&
+        data.durationMinutes <= 43200 &&
+        data.createdAt is timestamp &&
+        data.expiresAt is timestamp;
+    }
+
+    function isValidFileChunk(data) {
+      return data.keys().hasAll(['index', 'data']) &&
+        data.keys().hasOnly(['index', 'data']) &&
+        data.index is int &&
+        data.index >= 0 &&
+        data.index < 35 &&
+        data.data is string &&
+        data.data.size() >= 1 &&
+        data.data.size() <= 700000;
+    }
+
+    match /shares/{shareId} {
+      // Capability-based single-document lookup only while active
+      allow get: if isValidShareId(shareId) && existing().expiresAt > request.time;
+
+      // Never allow listing or enumerating all shared files
+      allow list: if false;
+
+      allow create: if isValidShareId(shareId) &&
+        isValidShareFile(incoming()) &&
+        incoming().shareId == shareId &&
+        incoming().createdAt == request.time &&
+        incoming().expiresAt > request.time &&
+        incoming().expiresAt <= request.time + duration.value(31, 'd');
+
+      allow update, delete: if false;
+
+      match /chunks/{chunkId} {
+        allow get: if isValidShareId(shareId) &&
+          isValidChunkId(chunkId) &&
+          exists(/databases/$(database)/documents/shares/$(shareId)) &&
+          get(/databases/$(database)/documents/shares/$(shareId)).data.expiresAt > request.time;
+
+        allow list: if false;
+
+        allow create: if isValidShareId(shareId) &&
+          isValidChunkId(chunkId) &&
+          isValidFileChunk(incoming()) &&
+          exists(/databases/$(database)/documents/shares/$(shareId)) &&
+          get(/databases/$(database)/documents/shares/$(shareId)).data.expiresAt > request.time;
+
+        allow update, delete: if false;
+      }
+    }
+  }
+}
