@@ -54,9 +54,9 @@ val installWebDependencies by tasks.registering(Exec::class) {
     workingDir = webRootDir
     val isWindows = System.getProperty("os.name").lowercase().contains("win")
     if (isWindows) {
-        commandLine("cmd", "/c", "npm", "install")
+        commandLine("cmd", "/c", "npm", "install", "--legacy-peer-deps")
     } else {
-        commandLine("sh", "-c", "npm install")
+        commandLine("sh", "-c", "npm install --legacy-peer-deps")
     }
 }
 
@@ -73,15 +73,10 @@ val buildWebBundle by tasks.registering(Exec::class) {
     }
 }
 
-val syncWebAssets by tasks.registering(Copy::class) {
+val syncWebAssets by tasks.registering(Sync::class) {
     group = "flovex"
-    description = "Copy built Vite web assets into Android assets/www"
+    description = "Sync built Vite web assets into Android assets/www"
     dependsOn(buildWebBundle)
-    doFirst {
-        if (androidAssetsWwwDir.exists()) {
-            androidAssetsWwwDir.deleteRecursively()
-        }
-    }
     from(webDistDir)
     into(androidAssetsWwwDir)
 }

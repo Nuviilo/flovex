@@ -175,32 +175,32 @@ export function UploadPanel() {
     <div className="space-y-6">
       {completedShare ? (
         <div className="space-y-6">
-          <div className="bg-[#F7F8FA] border border-slate-200 rounded-xl p-5 sm:p-6">
+          <div className="bg-[#F7F8FA] dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl p-5 sm:p-6">
             <div className="flex items-center justify-between gap-3 mb-4">
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
                 <Check className="w-4 h-4" />
                 File ready to share
               </span>
-              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-600">
-                <Clock className="w-3.5 h-3.5 text-slate-400" />
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-600 dark:text-slate-300">
+                <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                 {formatRemainingTime(completedShare.expiresAt.toMillis(), nowMs)} left
               </span>
             </div>
 
-            <p className="text-xs text-slate-500 mb-1.5">Share ID</p>
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-white border border-slate-200 rounded-lg px-4 py-3.5">
-              <span className="font-mono text-xl sm:text-2xl font-semibold tracking-tight text-slate-900 select-all">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mb-1.5">Share ID</p>
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-4 py-3.5">
+              <span className="font-mono text-xl sm:text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 select-all">
                 {completedShare.shareId}
               </span>
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => handleCopy('id')}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors whitespace-nowrap"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors whitespace-nowrap"
                 >
                   {copiedField === 'id' ? (
                     <>
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                      <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                       Copied ID
                     </>
                   ) : (
@@ -230,8 +230,8 @@ export function UploadPanel() {
               </div>
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-              <span className="font-medium text-slate-700 truncate max-w-[260px]">
+            <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
+              <span className="font-medium text-slate-700 dark:text-slate-200 truncate max-w-[260px]">
                 {completedShare.fileName}
               </span>
               <span aria-hidden="true">·</span>
@@ -244,7 +244,7 @@ export function UploadPanel() {
           <button
             type="button"
             onClick={handleReset}
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             Send another file
@@ -269,10 +269,10 @@ export function UploadPanel() {
             onDrop={handleDrop}
             className={`relative rounded-xl border-2 border-dashed transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
               isDragging
-                ? 'border-blue-600 bg-blue-50/70 scale-[1.005]'
+                ? 'border-blue-600 bg-blue-50/70 dark:bg-blue-950/35 scale-[1.005]'
                 : selectedFile
-                  ? 'border-slate-300 bg-[#F7F8FA] hover:border-slate-400'
-                  : 'border-slate-300 bg-[#F7F8FA] hover:border-blue-500 hover:bg-slate-50'
+                  ? 'border-slate-300 dark:border-slate-700 bg-[#F7F8FA] dark:bg-slate-950/60 hover:border-slate-400 dark:hover:border-slate-600'
+                  : 'border-slate-300 dark:border-slate-700 bg-[#F7F8FA] dark:bg-slate-950/60 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-slate-50 dark:hover:bg-slate-900/70'
             }`}
           >
             <input
@@ -286,14 +286,14 @@ export function UploadPanel() {
             {selectedFile ? (
               <div className="p-5 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-11 h-11 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-blue-600 shrink-0">
+                  <div className="w-11 h-11 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                     <FileTypeIcon mimeType={selectedFile.type} className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 truncate">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
                       {selectedFile.name}
                     </p>
-                    <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                       <span className="font-mono">{formatBytes(selectedFile.size)}</span>
                       <span aria-hidden="true">·</span>
                       <span className="truncate max-w-[200px]">
@@ -312,7 +312,7 @@ export function UploadPanel() {
                       setError(null);
                     }}
                     aria-label="Remove selected file"
-                    className="p-2 text-slate-400 hover:text-slate-700 hover:bg-white rounded-lg transition-colors shrink-0"
+                    className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-white dark:hover:bg-slate-800 rounded-lg transition-colors shrink-0"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -324,17 +324,17 @@ export function UploadPanel() {
                   className={`w-12 h-12 rounded-xl mx-auto mb-3.5 flex items-center justify-center border transition-colors ${
                     isDragging
                       ? 'bg-blue-600 border-blue-600 text-white'
-                      : 'bg-white border-slate-200 text-slate-600'
+                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'
                   }`}
                 >
                   <UploadCloud className="w-5 h-5" />
                 </div>
-                <p className="text-sm font-medium text-slate-900">
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                   {isDragging ? 'Drop file to upload' : 'Drag and drop a file here'}
                 </p>
-                <p className="text-xs text-slate-500 mt-1.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">
                   or{' '}
-                  <span className="text-blue-600 font-medium underline underline-offset-2">
+                  <span className="text-blue-600 dark:text-blue-400 font-medium underline underline-offset-2">
                     browse from your device
                   </span>{' '}
                   · Up to {formatBytes(MAX_FILE_SIZE_BYTES)}
@@ -345,15 +345,15 @@ export function UploadPanel() {
 
           <div>
             <div className="flex items-center justify-between gap-4 mb-2.5">
-              <label className="text-sm font-medium text-slate-800">
+              <label className="text-sm font-medium text-slate-800 dark:text-slate-200">
                 Keep file available for
               </label>
-              <span className="text-xs text-slate-500 font-mono">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                 Until {formatDateTime(Date.now() + resolvedMinutes * 60_000)}
               </span>
             </div>
 
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 p-1 bg-slate-100 rounded-lg">
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
               {DURATION_PRESETS.map((preset) => {
                 const active = presetId === preset.id;
                 return (
@@ -364,8 +364,8 @@ export function UploadPanel() {
                     onClick={() => setPresetId(preset.id)}
                     className={`px-2.5 py-2 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${
                       active
-                        ? 'bg-white text-slate-900 shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 shadow-xs'
+                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
                     {preset.label}
@@ -378,8 +378,8 @@ export function UploadPanel() {
                 onClick={() => setPresetId('custom')}
                 className={`px-2.5 py-2 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${
                   presetId === 'custom'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Custom
@@ -396,9 +396,9 @@ export function UploadPanel() {
                   onChange={(e) => setCustomValue(e.target.value)}
                   disabled={uploading}
                   aria-label="Custom duration value"
-                  className="w-24 px-3 py-2 text-sm font-mono bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-24 px-3 py-2 text-sm font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
-                <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg">
+                <div className="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg">
                   {(['minutes', 'hours', 'days'] as CustomUnit[]).map((unit) => (
                     <button
                       key={unit}
@@ -407,15 +407,15 @@ export function UploadPanel() {
                       onClick={() => setCustomUnit(unit)}
                       className={`px-3 py-1.5 text-xs font-medium rounded-md capitalize transition-colors whitespace-nowrap ${
                         customUnit === unit
-                          ? 'bg-white text-slate-900 shadow-xs'
-                          : 'text-slate-600 hover:text-slate-900'
+                          ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 shadow-xs'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       {unit}
                     </button>
                   ))}
                 </div>
-                <span className="text-xs text-slate-500 ml-auto hidden sm:inline">
+                <span className="text-xs text-slate-500 dark:text-slate-400 ml-auto hidden sm:inline">
                   1 min – 30 days
                 </span>
               </div>
@@ -425,7 +425,7 @@ export function UploadPanel() {
           {error && (
             <div
               role="alert"
-              className="flex items-start gap-2.5 p-3.5 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg"
+              className="flex items-start gap-2.5 p-3.5 text-sm text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/70 rounded-lg"
             >
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{error}</span>
@@ -434,13 +434,13 @@ export function UploadPanel() {
 
           {uploading && progress && (
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-slate-600">
+              <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300">
                 <span>
                   Uploading chunk {progress.completedChunks} of {progress.totalChunks}
                 </span>
                 <span className="font-mono font-medium">{progress.percent}%</span>
               </div>
-              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-blue-600 transition-all duration-150"
                   style={{ width: `${progress.percent}%` }}
@@ -453,7 +453,7 @@ export function UploadPanel() {
             type="button"
             disabled={!selectedFile || uploading}
             onClick={handleUpload}
-            className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-500 disabled:cursor-not-allowed transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+            className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900"
           >
             {uploading ? 'Uploading...' : 'Upload & Get Share ID'}
           </button>

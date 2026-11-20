@@ -25,17 +25,21 @@ export class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[#F7F8FA] flex items-center justify-center p-6">
-          <div className="max-w-lg w-full bg-white border border-slate-200 rounded-xl p-8">
-            <div className="flex items-center gap-3 text-red-600 mb-4">
+        <div className="min-h-screen bg-[#F7F8FA] dark:bg-slate-950 flex items-center justify-center p-6">
+          <div className="max-w-lg w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8">
+            <div className="flex items-center gap-3 text-red-600 dark:text-red-400 mb-4">
               <AlertTriangle className="w-5 h-5 shrink-0" />
-              <h2 className="text-lg font-semibold text-slate-900">Something went wrong</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                Something went wrong
+              </h2>
             </div>
-            <p className="text-sm text-slate-600 mb-6 break-words">{this.state.message}</p>
+            <p className="text-sm text-slate-600 dark:text-slate-300 mb-6 break-words">
+              {this.state.message}
+            </p>
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-slate-900 rounded-lg hover:bg-slate-800 transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-slate-900 dark:bg-blue-600 rounded-lg hover:bg-slate-800 dark:hover:bg-blue-700 transition-colors whitespace-nowrap"
             >
               <RotateCcw className="w-4 h-4" />
               Reload flovex

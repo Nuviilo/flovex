@@ -1,6 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
+set CSC_IDENTITY_AUTO_DISCOVERY=false
 
 echo ============================================
 echo   flovex - Windows .EXE Builder
@@ -23,7 +24,7 @@ if errorlevel 1 (
 )
 
 echo [1/4] Installing project dependencies...
-call npm install
+call npm install --legacy-peer-deps
 if errorlevel 1 (
     echo [ERROR] npm install failed.
     pause
@@ -42,14 +43,14 @@ if errorlevel 1 (
 echo.
 echo [3/4] Ensuring Electron and electron-builder are installed...
 if not exist "node_modules\electron" (
-    call npm install --no-save electron electron-builder
+    call npm install --no-save --legacy-peer-deps electron electron-builder
     if errorlevel 1 (
         echo [ERROR] Failed to install electron and electron-builder.
         pause
         exit /b 1
     )
 ) else if not exist "node_modules\electron-builder" (
-    call npm install --no-save electron-builder
+    call npm install --no-save --legacy-peer-deps electron-builder
     if errorlevel 1 (
         echo [ERROR] Failed to install electron-builder.
         pause
