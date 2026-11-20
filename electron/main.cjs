@@ -60,7 +60,7 @@ async function createWindow() {
     minWidth: 480,
     minHeight: 600,
     title: 'flovex',
-    icon: path.join(__dirname, '..', 'build', 'icon.png'),
+    icon: path.join(__dirname, 'icons', 'icon.png'),
     autoHideMenuBar: true,
     backgroundColor: '#F7F8FA',
     webPreferences: {
